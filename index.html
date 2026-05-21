@@ -61,13 +61,13 @@
 
     <!-- ===== SLIDE 2: THE REFRAIN ===== -->
     <section data-background-color="#0a0708" data-transition="fade">
-      <div style="padding: 4em 0;">
-        <div class="kicker" style="text-align:center; margin-bottom:2em;">The whole talk in one line</div>
+      <div style="padding: 1em 0;">
+        <div class="kicker" style="text-align:center; margin-bottom:1em;">The whole talk in one line</div>
         <p class="refrain">
           We keep mistaking <br>
           <span class="accent">context</span> for <span class="accent">continuity</span>.
         </p>
-        <p class="handwritten fragment fade-up" style="text-align:center; color:var(--paper-tape); margin-top:3em; font-size:1.3em;">
+        <p class="handwritten fragment fade-up" style="text-align:center; color:var(--paper-tape); margin-top:1.5em; font-size:1.05em;">
           (you'll hear this line three more times. that's on purpose.)
         </p>
       </div>
@@ -84,19 +84,17 @@
         Groundhog Day is the <span style="color:var(--vhs-cyan);">UX</span>.<br>
         Memento is the <span style="color:var(--blood-red-bright);">mechanism</span>.
       </h2>
-      <div class="split poster-split" style="margin-top:1em;">
+      <div class="split poster-split" style="margin-top:0.5em;">
         <div class="split-panel">
           <img src="assets/images/poster-groundhog-day.jpg" alt="Groundhog Day (1993) theatrical poster" class="film-poster">
           <h3 style="color:var(--vhs-cyan);">GROUNDHOG DAY (1993)</h3>
-          <p>Every new session wakes up fresh.</p>
-          <p>Same alarm. Same clueless agent. No memory of yesterday.</p>
+          <p>Every session wakes up fresh. Same alarm. No memory of yesterday.</p>
           <p class="verdict" style="color:var(--vhs-cyan);">— what users feel</p>
         </div>
         <div class="split-panel">
           <img src="assets/images/poster-memento.jpg" alt="Memento (2000) theatrical poster" class="film-poster">
           <h3 style="color:var(--blood-red-bright);">MEMENTO (2000)</h3>
-          <p>Leonard tattoos himself because he can't trust his own memory.</p>
-          <p>Your agent tattoos itself with <code>CLAUDE.md</code>, <code>AGENTS.md</code>, indexes.</p>
+          <p>Leonard tattoos himself. Your agent tattoos itself with <code>CLAUDE.md</code>, <code>AGENTS.md</code>, indexes.</p>
           <p class="verdict">— what's actually happening</p>
         </div>
       </div>
@@ -110,14 +108,14 @@
     <section data-background-color="#0a0708">
       <div class="kicker">Why this happens · 1 of 3</div>
       <h2>Frozen weights</h2>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:50px; align-items:center; margin-top:1em;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:center; margin-top:0.5em;">
         <div>
           <p>The model was sealed last training run.</p>
-          <p>Anything it &ldquo;learned&rdquo; about you after that lives <em>outside</em> the model — in the context window, the harness, files on disk, RAG indexes.</p>
+          <p>Anything it &ldquo;learned&rdquo; about you after that lives <em>outside</em> the model.</p>
           <p class="fragment fade-up"><strong>The weights don't know you exist.</strong></p>
         </div>
         <div style="text-align:center;">
-          <div class="terminal-text" style="font-size:1.6em; line-height:1.4; padding:2em; border:1px solid var(--vhs-cyan); background:rgba(0,0,0,0.5);">
+          <div class="terminal-text" style="font-size:1.3em; line-height:1.4; padding:1.2em; border:1px solid var(--vhs-cyan); background:rgba(0,0,0,0.5);">
             $ model.weights<br>
             <span style="color:var(--blood-red-bright);">→ READ-ONLY</span><br>
             $ model.memory_of_you<br>
@@ -209,11 +207,11 @@
 
     <!-- ===== SLIDE 8: GROUNDHOG DAY RESET (the gag) ===== -->
     <section data-background-color="#000" data-transition="fade" id="slide-reset" data-state="trigger-groundhog-reset">
-      <div style="text-align:center; padding:5em 0;">
-        <div class="terminal-text" style="font-size:1.4em; opacity:0.5;">[ context budget exceeded ]</div>
-        <div class="terminal-text" style="font-size:1.4em; opacity:0.5; margin-top:0.5em;">[ /compact ]</div>
-        <div class="terminal-text" style="font-size:1.4em; opacity:0.5; margin-top:0.5em;">[ session restored ]</div>
-        <h1 class="poster-title fragment fade-up" style="margin-top:2em;">
+      <div style="text-align:center; padding:2em 0;">
+        <div class="terminal-text" style="font-size:1.2em; opacity:0.5;">[ context budget exceeded ]</div>
+        <div class="terminal-text" style="font-size:1.2em; opacity:0.5; margin-top:0.4em;">[ /compact ]</div>
+        <div class="terminal-text" style="font-size:1.2em; opacity:0.5; margin-top:0.4em;">[ session restored ]</div>
+        <h1 class="poster-title fragment fade-up" style="margin-top:1.5em; font-size:2.6em;">
           ...<br>where were we?
         </h1>
       </div>
@@ -230,28 +228,26 @@
       <div class="kicker">Where the heartbeat lives</div>
       <h2>Two harnesses. Same problem. <br>Different organs.</h2>
 
-      <div class="heartbeat-split" style="margin-top:1em;">
+      <div class="heartbeat-split" style="margin-top:0.6em;">
         <div class="heartbeat-panel">
           <h3>CLAUDE CODE</h3>
-          <p>Continuity <strong>compressed into the main loop</strong>.</p>
-          <p>Runtime-first. State lives in the agent's working session.</p>
+          <p>Continuity <strong>compressed into the main loop</strong>. Runtime-first.</p>
           <div class="ekg fragment fade-up">▁▁▂▃▅█▅▃▂▁▁▂▃▅█▅▃▂▁</div>
-          <p style="font-size:0.65em; color:var(--paper-tape); margin-top:0.5em;">one strong pulse</p>
+          <p style="font-size:0.6em; color:var(--paper-tape); margin-top:0.3em;">one strong pulse</p>
         </div>
         <div class="heartbeat-panel">
           <h3>CODEX</h3>
-          <p>Continuity <strong>split across thread / rollout / state</strong>.</p>
-          <p>Policy-first. State in structured control layers.</p>
+          <p>Continuity <strong>split across thread / rollout / state</strong>. Policy-first.</p>
           <div class="ekg fragment fade-up" style="color:var(--vhs-magenta);">▂▃▁▄▂▅▁▃▆▂▄▁▃▅▂▁▄▃</div>
-          <p style="font-size:0.65em; color:var(--paper-tape); margin-top:0.5em;">multiple weak signals</p>
+          <p style="font-size:0.6em; color:var(--paper-tape); margin-top:0.3em;">multiple weak signals</p>
         </div>
       </div>
 
-      <p class="refrain fragment fade-up" style="font-size:1.1em !important; margin-top:1em;">
-        Neither one is in the model. We keep mistaking <span class="accent">context</span> for <span class="accent">continuity</span>.
+      <p class="refrain fragment fade-up" style="font-size:1em !important; margin-top:0.8em;">
+        Neither is in the model. We keep mistaking <span class="accent">context</span> for <span class="accent">continuity</span>.
       </p>
 
-      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.5em;">→ agentway.dev · book2-comparing-en</p>
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.3em;">→ agentway.dev · book2-comparing-en</p>
       <aside class="notes">
         Shoutout agentway.dev — the comparative harness notes book. Chapter 3 is gold.
         Two of the biggest agent harnesses on earth disagree about where memory should live.
@@ -265,9 +261,9 @@
       <div class="kicker">The obvious "fix" that isn't</div>
       <h2>Long context is a bigger desk,<br>not a better memory.</h2>
 
-      <div class="desk-stage" style="margin-top:1.5em;">
+      <div class="desk-stage" style="margin-top:0.8em; gap:18px;">
         <div style="width:90%;">
-          <div class="desk-row" style="position:relative;">
+          <div class="desk-row" style="position:relative; height:70px;">
             <div class="token attended"></div>
             <div class="token attended" style="opacity:0.85;"></div>
             <div class="token dim" style="opacity:0.5;"></div>
@@ -284,14 +280,11 @@
             <span class="desk-label" style="right:0;">BACK</span>
           </div>
         </div>
-        <p style="font-size:0.8em; color:var(--paper-tape); text-align:center;">
-          Liu et al. — models use the beginning &amp; end of long context better than the middle. Longer ≠ better retrieval.
+        <p style="font-size:0.7em; color:var(--paper-tape); text-align:center;">
+          Liu et al. — models use beginning &amp; end of long context better than the middle.
         </p>
-        <p class="fragment fade-up" style="text-align:center; font-size:1em;">
-          A million tokens is <em>a million ways to lose attention</em>.
-        </p>
-        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:0.5em;">
-          Cache isn't memory. It's the model saying<br>"I've seen this exact prefix before."<br>That's déjà vu, not understanding.
+        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.1em;">
+          Cache isn't memory. It's the model saying "I've seen this prefix before."<br>That's déjà vu, not understanding.
         </p>
       </div>
       <aside class="notes">
@@ -306,21 +299,20 @@
       <div class="kicker">What happens when the desk overflows</div>
       <h2>Compaction is REM sleep<br><span style="color:var(--blood-red-bright);">with data loss.</span></h2>
 
-      <div style="margin-top:1.5em;">
-        <p>Humans consolidate during sleep — facts move from working memory to long-term storage.</p>
-        <p>Agents don't sleep. They get <code>/compact</code>'d.</p>
-        <p class="fragment fade-up"><strong>Compaction is summarization, and summarization is lossy.</strong></p>
+      <div style="margin-top:0.8em;">
+        <p>Humans consolidate during sleep. Agents don't sleep — they get <code>/compact</code>'d.</p>
+        <p class="fragment fade-up"><strong>Compaction is summarization. Summarization is lossy.</strong></p>
 
-        <div class="compaction-stage" id="compaction-stage" style="margin-top:2em; padding:1.5em; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px;">
-          <div class="terminal-text" style="font-size:1.1em;">
-            > 47 tool calls · 18K tokens of file reads · 6 reasoning blocks · 12 decisions
+        <div class="compaction-stage" id="compaction-stage" style="margin-top:0.8em; padding:0.9em 1.2em; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px;">
+          <div class="terminal-text" style="font-size:0.95em;">
+            > 47 tool calls · 18K tokens of file reads · 6 reasoning blocks
           </div>
-          <div class="terminal-text" style="font-size:1.1em; margin-top:0.5em; color:var(--vhs-magenta);">
+          <div class="terminal-text" style="font-size:0.95em; margin-top:0.3em; color:var(--vhs-magenta);">
             → "User refactored auth. Tests pass. Continuing."
           </div>
         </div>
 
-        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:1em;">
+        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.1em; margin-top:0.8em;">
           The dream you remember in the morning<br>is not the dream you had.
         </p>
       </div>
@@ -371,9 +363,8 @@
         </div>
       </div>
 
-      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.2em; margin-top:1em;">
-        Groundhog Day alone is sad. Groundhog Day <em>multiplayer</em> is chaos. <br>
-        That's what <code>chorus</code> is for.
+      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1em; margin-top:0.5em;">
+        Groundhog Day alone is sad. Groundhog Day <em>multiplayer</em> is chaos. That's what <code>chorus</code> is for.
       </p>
 
       <aside class="notes">
@@ -392,28 +383,22 @@
       <div class="kicker">When you need to find the tattoo</div>
       <h2>Your codebase is <em>not a smoothie</em>.</h2>
 
-      <div class="split" style="margin-top:1.5em;">
+      <div class="split" style="margin-top:0.8em;">
         <div class="split-panel">
           <img src="assets/images/blender.jpg" alt="blender">
           <h3 style="color:var(--blood-red-bright);">VECTOR RAG</h3>
-          <p>Chunk it. Blend it. Embed it. Cosine-similarity it.</p>
-          <p>The original document is now <strong>a slurry</strong>.</p>
-          <p class="verdict">structure dies. context bleeds. retrieval hallucinates.</p>
+          <p>Chunk it. Blend it. Embed it. The document is now <strong>a slurry</strong>.</p>
+          <p class="verdict">structure dies. retrieval hallucinates.</p>
         </div>
         <div class="split-panel">
           <img src="assets/images/card-catalog.jpg" alt="library card catalog">
           <h3 style="color:var(--vhs-yellow);">VECTORLESS</h3>
-          <p>Keep the structure. Let the model <em>navigate</em>.</p>
-          <p>PageIndex: tree-based reasoning over document hierarchy.</p>
-          <p class="verdict" style="color:var(--vhs-yellow);">the library card catalog approach.</p>
+          <p>Keep the structure. Let the model <em>navigate</em>. PageIndex: tree-based reasoning.</p>
+          <p class="verdict" style="color:var(--vhs-yellow);">the card catalog approach.</p>
         </div>
       </div>
 
-      <p class="fragment fade-up" style="text-align:center; margin-top:1em; font-size:0.95em;">
-        <strong>Open question:</strong> where do the tattoos live? &nbsp; Who invalidates them? &nbsp; Per-user or shared? &nbsp; Can prompt injection write to them?
-      </p>
-
-      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.8em;">→ github.com/VectifyAI/PageIndex</p>
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.6em;">→ github.com/VectifyAI/PageIndex &nbsp;·&nbsp; storage / invalidation = next slide</p>
 
       <aside class="notes">
         Vector RAG isn't bad — it's a hammer. Vectorless is a different hammer for a different nail.
@@ -427,21 +412,20 @@
       <div class="kicker">The harder questions</div>
       <h2>Where do the tattoos live?</h2>
 
-      <ul style="font-size:0.9em; margin-top:1em; max-width:36em; margin-left:auto; margin-right:auto;">
-        <li class="fragment fade-up">In the repo? Then every clone is a brain transplant.</li>
-        <li class="fragment fade-up">In <code>~/.config</code>? Then nobody else can see what you taught it.</li>
-        <li class="fragment fade-up">On a server? Then who owns it, who audits it, who deletes it?</li>
+      <ul style="font-size:0.8em; margin-top:0.6em; max-width:36em; margin-left:auto; margin-right:auto; line-height:1.4;">
+        <li class="fragment fade-up">In the repo? Every clone is a brain transplant.</li>
+        <li class="fragment fade-up">In <code>~/.config</code>? Nobody else sees what you taught it.</li>
+        <li class="fragment fade-up">On a server? Who owns it, audits it, deletes it?</li>
         <li class="fragment fade-up">Per-user? Per-team? Per-agent? All three?</li>
         <li class="fragment fade-up"><strong>What happens when prompt injection writes to memory?</strong></li>
-        <li class="fragment fade-up">When the codebase changes, who invalidates the index? &nbsp;<em>(spoiler: nobody does)</em></li>
+        <li class="fragment fade-up">Codebase changes — who invalidates the index? &nbsp;<em>(spoiler: nobody)</em></li>
       </ul>
 
-      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:2em;">
-        Harness engineering is becoming a real discipline. <br>
-        Not just vibes anymore.
+      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1em; margin-top:0.8em;">
+        Harness engineering is becoming a real discipline. Not just vibes.
       </p>
 
-      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.6em;">
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.3em;">
         → walkinglabs.github.io/learn-harness-engineering &nbsp;·&nbsp; arXiv:2605.18747
       </p>
 
@@ -606,7 +590,9 @@
     backgroundTransition: 'fade',
     width: 1280,
     height: 800,
-    margin: 0.06,
+    margin: 0.03,
+    minScale: 0.2,
+    maxScale: 2.0,
     plugins: [ RevealNotes, RevealHighlight ]
   }).then(() => {
     if (window.GroundhogEffects) window.GroundhogEffects.init();

@@ -75,15 +75,16 @@ html, body, .reveal {
   margin: 0 0 0.4em;
 }
 
-.reveal h1 { font-size: 3.2em; line-height: 1.0; }
-.reveal h2 { font-size: 2.2em; line-height: 1.05; }
-.reveal h3 { font-size: 1.4em; line-height: 1.1; letter-spacing: 0.08em; }
+.reveal h1 { font-size: 2.4em; line-height: 1.0; }
+.reveal h2 { font-size: 1.7em; line-height: 1.05; }
+.reveal h3 { font-size: 1.15em; line-height: 1.1; letter-spacing: 0.08em; }
 
 .reveal p, .reveal li {
   font-family: 'Special Elite', 'Courier New', monospace;
-  font-size: 0.85em;
-  line-height: 1.5;
+  font-size: 0.72em;
+  line-height: 1.4;
   color: var(--snow-white);
+  margin: 0.4em 0;
 }
 
 .reveal em {
@@ -107,7 +108,7 @@ html, body, .reveal {
   font-family: 'Playfair Display', 'Georgia', serif !important;
   font-style: italic;
   font-weight: 700;
-  font-size: 2.4em !important;
+  font-size: 1.9em !important;
   line-height: 1.15;
   color: var(--snow-white);
   text-align: center;
@@ -124,7 +125,7 @@ html, body, .reveal {
 /* ---------- Movie poster title ---------- */
 .poster-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 4.2em;
+  font-size: 3.2em;
   line-height: 0.92;
   letter-spacing: 0.02em;
   color: var(--snow-white);
@@ -489,10 +490,10 @@ html, body, .reveal {
 }
 .split-panel img {
   width: 100%;
-  max-height: 280px;
+  max-height: 180px;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   filter: contrast(1.05) saturate(0.85);
 }
 .split-panel h3 {
@@ -509,9 +510,9 @@ html, body, .reveal {
 /* ---------- Film poster (fair-use thumbnail) ---------- */
 .film-poster {
   display: block;
-  margin: 0 auto 12px;
-  width: 130px;
-  max-height: 200px;
+  margin: 0 auto 10px;
+  width: 110px;
+  max-height: 160px;
   object-fit: cover;
   border-radius: 2px;
   box-shadow:
@@ -627,7 +628,7 @@ html, body, .reveal {
 }
 .closer .biography {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 3.2em;
+  font-size: 2.6em;
   line-height: 1.0;
   letter-spacing: 0.04em;
   color: var(--snow-white);
@@ -648,10 +649,10 @@ html, body, .reveal {
 .kicker {
   font-family: 'VT323', monospace;
   color: var(--vhs-cyan);
-  font-size: 0.75em;
+  font-size: 0.65em;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  margin-bottom: 1em;
+  margin-bottom: 0.7em;
 }
 
 .attribution {
