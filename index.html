@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Every Session Is Groundhog Day for Your AI</title>
+
+<link rel="stylesheet" href="lib/reset.css">
+<link rel="stylesheet" href="lib/reveal.css">
+<link rel="stylesheet" href="lib/theme-black.css" id="theme">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=VT323&family=Permanent+Marker&family=Caveat:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/cinema.css">
+</head>
+<body>
+
+<!-- Persistent UI -->
+<div id="boooo-counter"><span class="label">BOOOO COUNT</span><span id="boooo-value">0</span></div>
+<div id="system-reminder-overlay">
+  <span class="label">&lt;system-reminder&gt;</span>
+  <div id="system-reminder-text"></div>
+</div>
+<div id="reset-overlay">
+  <div class="clock-readout">06:00</div>
+</div>
+<div class="attribution">© Amit Prusty · <a href="https://github.com/cote-star/groundhog-day-for-agents" target="_blank" rel="noopener">github.com/cote-star/groundhog-day-for-agents</a> · CC photos via Wikimedia Commons</div>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ===== SLIDE 1: COLD OPEN ===== -->
+    <section data-background-color="#0a0708" data-transition="fade" id="slide-cold-open">
+      <div style="display:flex; align-items:center; gap:60px; justify-content:center;">
+        <div style="flex:0 0 36%;">
+          <div class="vhs vhs-track" style="border-radius:8px; overflow:hidden;">
+            <img src="assets/images/alarm-clock-windup.jpg" alt="alarm clock" style="width:100%; display:block; filter:contrast(1.1) saturate(0.85);">
+          </div>
+        </div>
+        <div style="flex:0 0 56%; text-align:left;">
+          <div class="kicker">Cold open · 06:00 AM</div>
+          <h1 class="poster-title">
+            Every Session Is<br>
+            <span class="red">Groundhog Day</span><br>
+            For Your AI
+            <span class="small">A talk about why your agent never remembers you</span>
+          </h1>
+          <p class="handwritten" style="color:var(--paper-tape); font-size:1em; margin-top:0.7em;">
+            "I got you, babe."&nbsp;·&nbsp; by Amit Prusty
+          </p>
+        </div>
+      </div>
+      <aside class="notes">
+        Open with: "Raise your hand if you've ever opened a fresh Claude or Codex session and felt your agent forget you exist."
+        Wait for hands. Then: "Bill Murray wakes up to Sonny &amp; Cher. Your agent wakes up to a system prompt. Same vibe."
+        30 min talk. Not rigorous. Mostly puns. We'll end with discussion.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 2: THE REFRAIN ===== -->
+    <section data-background-color="#0a0708" data-transition="fade">
+      <div style="padding: 4em 0;">
+        <div class="kicker" style="text-align:center; margin-bottom:2em;">The whole talk in one line</div>
+        <p class="refrain">
+          We keep mistaking <br>
+          <span class="accent">context</span> for <span class="accent">continuity</span>.
+        </p>
+        <p class="handwritten fragment fade-up" style="text-align:center; color:var(--paper-tape); margin-top:3em; font-size:1.3em;">
+          (you'll hear this line three more times. that's on purpose.)
+        </p>
+      </div>
+      <aside class="notes">
+        This is the thesis. Land it. Pause. Say it twice if the room is quiet.
+        You'll repeat this after the heartbeat slide and at the closer.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 3: THE FRAME ===== -->
+    <section data-background-color="#0a0708" data-transition="convex">
+      <div class="kicker" style="text-align:center;">The frame</div>
+      <h2 style="text-align:center; font-size:2.6em; margin-bottom:0.6em;">
+        Groundhog Day is the <span style="color:var(--vhs-cyan);">UX</span>.<br>
+        Memento is the <span style="color:var(--blood-red-bright);">mechanism</span>.
+      </h2>
+      <div class="split poster-split" style="margin-top:1em;">
+        <div class="split-panel">
+          <img src="assets/images/poster-groundhog-day.jpg" alt="Groundhog Day (1993) theatrical poster" class="film-poster">
+          <h3 style="color:var(--vhs-cyan);">GROUNDHOG DAY (1993)</h3>
+          <p>Every new session wakes up fresh.</p>
+          <p>Same alarm. Same clueless agent. No memory of yesterday.</p>
+          <p class="verdict" style="color:var(--vhs-cyan);">— what users feel</p>
+        </div>
+        <div class="split-panel">
+          <img src="assets/images/poster-memento.jpg" alt="Memento (2000) theatrical poster" class="film-poster">
+          <h3 style="color:var(--blood-red-bright);">MEMENTO (2000)</h3>
+          <p>Leonard tattoos himself because he can't trust his own memory.</p>
+          <p>Your agent tattoos itself with <code>CLAUDE.md</code>, <code>AGENTS.md</code>, indexes.</p>
+          <p class="verdict">— what's actually happening</p>
+        </div>
+      </div>
+      <aside class="notes">
+        Groundhog Day is the marketing. Memento is the better metaphor — because at least Leonard understands he has the problem and writes notes to himself.
+        This frame gives you the whole talk: every solution path is a tattoo strategy.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 4: WHY #1 — FROZEN WEIGHTS ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">Why this happens · 1 of 3</div>
+      <h2>Frozen weights</h2>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:50px; align-items:center; margin-top:1em;">
+        <div>
+          <p>The model was sealed last training run.</p>
+          <p>Anything it &ldquo;learned&rdquo; about you after that lives <em>outside</em> the model — in the context window, the harness, files on disk, RAG indexes.</p>
+          <p class="fragment fade-up"><strong>The weights don't know you exist.</strong></p>
+        </div>
+        <div style="text-align:center;">
+          <div class="terminal-text" style="font-size:1.6em; line-height:1.4; padding:2em; border:1px solid var(--vhs-cyan); background:rgba(0,0,0,0.5);">
+            $ model.weights<br>
+            <span style="color:var(--blood-red-bright);">→ READ-ONLY</span><br>
+            $ model.memory_of_you<br>
+            <span style="color:var(--blood-red-bright);">→ ENOENT</span>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        Training is a one-time write. Deployment is read-only forever.
+        Whatever the model "knows" came from the internet, frozen at a date.
+        Anything personal must be carried in by something else — that's the harness's job.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 5: WHY #2 — ALIGNMENT ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">Why this happens · 2 of 3</div>
+      <h2>Alignment teaches manners,<br>not memory</h2>
+      <div style="margin-top:1em;">
+        <p>RLHF teaches the model <em>how to behave</em> like it knows you.</p>
+        <p>Friendly tone. Helpful structure. Says &ldquo;great question.&rdquo;</p>
+        <p class="fragment fade-up"><strong>It doesn't teach the model that you exist.</strong></p>
+        <p class="handwritten fragment fade-up" style="color:var(--paper-tape); font-size:1.4em; text-align:center; margin-top:2em;">
+          Your agent's warmth is generic. <br>Yours is the same as everyone else's.
+        </p>
+      </div>
+      <aside class="notes">
+        The agent acts familiar. That's training, not memory.
+        Useful counterpoint to "but it feels like it remembers me" — no, it's been trained to act like it does.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 6: WHY #3 — HARNESS AS PROSTHETIC ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">Why this happens · 3 of 3</div>
+      <h2>The harness is the prosthetic</h2>
+      <div style="margin-top:1em;">
+        <p>The model is a notepad. The harness pretends it's a brain.</p>
+        <p>System prompt · tool definitions · context injection · compaction · file reads · skills · hooks · memory files — <em>all the harness</em>.</p>
+        <p class="fragment fade-up"><strong>"Your context isn't your context."</strong> <span style="color:var(--paper-tape);">— Mario, building pi in a world of slop</span></p>
+        <p class="fragment fade-up handwritten" style="font-size:1.3em; color:var(--paper-tape); text-align:center; margin-top:1.5em;">
+          We're asking a notepad to be a hippocampus. <br>
+          With a 200K cap. And it changes between releases.
+        </p>
+      </div>
+      <aside class="notes">
+        Shoutout Mario here — his "your context isn't your context" line is exactly right.
+        The harness rewrites context behind your back: system reminders inserted "in the most opportune place," tools added/removed between releases.
+        This is your setup for the next slide (the receipts).
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 7: MARIO'S RECEIPTS (corkboard) ===== -->
+    <!-- system reminder overlay fires on slide enter -->
+    <section data-background-image="assets/images/bulletin-board.jpg" data-background-size="cover" data-background-opacity="0.55" id="slide-receipts" data-state="trigger-system-reminder">
+      <div class="kicker" style="background:rgba(0,0,0,0.6); padding:6px 14px; display:inline-block;">Mario's receipts · the symptoms</div>
+      <h2 style="background:rgba(0,0,0,0.6); padding:10px 18px; display:inline-block;">Things the harness does behind your back</h2>
+
+      <div class="receipts-grid" style="margin-top:1.2em;">
+        <div class="receipt" style="transform:rotate(-3deg);">
+          The system prompt changes <strong>every release</strong>. Tools added, removed, renamed. Your agent's personality is on a rolling update.
+        </div>
+        <div class="receipt" style="transform:rotate(2deg);">
+          System reminders injected "in the most opportune place" — <em>literally tells the model</em>: "this may or may not be relevant."
+        </div>
+        <div class="receipt" style="transform:rotate(-2deg);">
+          LSP runs after <strong>every edit</strong>. Imagine compiling after every line you type.
+        </div>
+        <div class="receipt" style="transform:rotate(4deg);">
+          Zero observability by default. You don't see what the harness mutates.
+        </div>
+        <div class="receipt" style="transform:rotate(-3deg);">
+          <em>Compounding boooos</em> — small errors stack across turns. No bottleneck. Pain delayed.
+        </div>
+        <div class="receipt" style="transform:rotate(2deg);">
+          Locally patches. <strong>Globally fuxes.</strong> The diff works. The system doesn't.
+        </div>
+        <div class="receipt" style="grid-column: 2 / 3; transform:rotate(-1deg);">
+          "A sufficiently detailed spec is called a <strong>program</strong>." — Mario
+        </div>
+      </div>
+
+      <aside class="notes">
+        SHOUTOUT MARIO. His "Building pi in a world of slop" talk is the best 18 minutes you can spend this week.
+        Watch the BOOOO counter tick up as you click through fragments — that's the running joke.
+        WAIT for the system reminder overlay to pop in (~2s after slide enter). Let it sit. Read it aloud in a deadpan.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 8: GROUNDHOG DAY RESET (the gag) ===== -->
+    <section data-background-color="#000" data-transition="fade" id="slide-reset" data-state="trigger-groundhog-reset">
+      <div style="text-align:center; padding:5em 0;">
+        <div class="terminal-text" style="font-size:1.4em; opacity:0.5;">[ context budget exceeded ]</div>
+        <div class="terminal-text" style="font-size:1.4em; opacity:0.5; margin-top:0.5em;">[ /compact ]</div>
+        <div class="terminal-text" style="font-size:1.4em; opacity:0.5; margin-top:0.5em;">[ session restored ]</div>
+        <h1 class="poster-title fragment fade-up" style="margin-top:2em;">
+          ...<br>where were we?
+        </h1>
+      </div>
+      <aside class="notes">
+        THE RESET GAG. Slide opens dark with alarm-clock readout overlay (06:00 blinking red).
+        Wait 2-3 seconds. Let the room laugh. Then say:
+        "...yeah. it happened to us too."
+        Then advance.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 9: WHERE THE HEARTBEAT LIVES ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">Where the heartbeat lives</div>
+      <h2>Two harnesses. Same problem. <br>Different organs.</h2>
+
+      <div class="heartbeat-split" style="margin-top:1em;">
+        <div class="heartbeat-panel">
+          <h3>CLAUDE CODE</h3>
+          <p>Continuity <strong>compressed into the main loop</strong>.</p>
+          <p>Runtime-first. State lives in the agent's working session.</p>
+          <div class="ekg fragment fade-up">▁▁▂▃▅█▅▃▂▁▁▂▃▅█▅▃▂▁</div>
+          <p style="font-size:0.65em; color:var(--paper-tape); margin-top:0.5em;">one strong pulse</p>
+        </div>
+        <div class="heartbeat-panel">
+          <h3>CODEX</h3>
+          <p>Continuity <strong>split across thread / rollout / state</strong>.</p>
+          <p>Policy-first. State in structured control layers.</p>
+          <div class="ekg fragment fade-up" style="color:var(--vhs-magenta);">▂▃▁▄▂▅▁▃▆▂▄▁▃▅▂▁▄▃</div>
+          <p style="font-size:0.65em; color:var(--paper-tape); margin-top:0.5em;">multiple weak signals</p>
+        </div>
+      </div>
+
+      <p class="refrain fragment fade-up" style="font-size:1.1em !important; margin-top:1em;">
+        Neither one is in the model. We keep mistaking <span class="accent">context</span> for <span class="accent">continuity</span>.
+      </p>
+
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.5em;">→ agentway.dev · book2-comparing-en</p>
+      <aside class="notes">
+        Shoutout agentway.dev — the comparative harness notes book. Chapter 3 is gold.
+        Two of the biggest agent harnesses on earth disagree about where memory should live.
+        Both agree it's not in the model. That tells you everything.
+        SECOND DROP of the refrain here.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 10: BIGGER DESK ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">The obvious "fix" that isn't</div>
+      <h2>Long context is a bigger desk,<br>not a better memory.</h2>
+
+      <div class="desk-stage" style="margin-top:1.5em;">
+        <div style="width:90%;">
+          <div class="desk-row" style="position:relative;">
+            <div class="token attended"></div>
+            <div class="token attended" style="opacity:0.85;"></div>
+            <div class="token dim" style="opacity:0.5;"></div>
+            <div class="token mid"></div>
+            <div class="token mid"></div>
+            <div class="token mid"></div>
+            <div class="token mid"></div>
+            <div class="token mid"></div>
+            <div class="token dim" style="opacity:0.5;"></div>
+            <div class="token attended" style="opacity:0.85;"></div>
+            <div class="token attended"></div>
+            <span class="desk-label" style="left:0;">FRONT</span>
+            <span class="desk-label" style="left:50%; transform:translateX(-50%);">← LOST IN HERE →</span>
+            <span class="desk-label" style="right:0;">BACK</span>
+          </div>
+        </div>
+        <p style="font-size:0.8em; color:var(--paper-tape); text-align:center;">
+          Liu et al. — models use the beginning &amp; end of long context better than the middle. Longer ≠ better retrieval.
+        </p>
+        <p class="fragment fade-up" style="text-align:center; font-size:1em;">
+          A million tokens is <em>a million ways to lose attention</em>.
+        </p>
+        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:0.5em;">
+          Cache isn't memory. It's the model saying<br>"I've seen this exact prefix before."<br>That's déjà vu, not understanding.
+        </p>
+      </div>
+      <aside class="notes">
+        Lost in the Middle — Liu et al. 2023. U-shaped retrieval accuracy on long context.
+        The frontier labs themselves tell you: don't dump everything in. Targeted retrieval beats huge context.
+        Cache point is a sidebar — say if time, skip if not.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 11: COMPACTION = REM SLEEP (with animation) ===== -->
+    <section data-background-color="#0a0708" id="slide-compaction" data-state="trigger-compaction">
+      <div class="kicker">What happens when the desk overflows</div>
+      <h2>Compaction is REM sleep<br><span style="color:var(--blood-red-bright);">with data loss.</span></h2>
+
+      <div style="margin-top:1.5em;">
+        <p>Humans consolidate during sleep — facts move from working memory to long-term storage.</p>
+        <p>Agents don't sleep. They get <code>/compact</code>'d.</p>
+        <p class="fragment fade-up"><strong>Compaction is summarization, and summarization is lossy.</strong></p>
+
+        <div class="compaction-stage" id="compaction-stage" style="margin-top:2em; padding:1.5em; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px;">
+          <div class="terminal-text" style="font-size:1.1em;">
+            > 47 tool calls · 18K tokens of file reads · 6 reasoning blocks · 12 decisions
+          </div>
+          <div class="terminal-text" style="font-size:1.1em; margin-top:0.5em; color:var(--vhs-magenta);">
+            → "User refactored auth. Tests pass. Continuing."
+          </div>
+        </div>
+
+        <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:1em;">
+          The dream you remember in the morning<br>is not the dream you had.
+        </p>
+      </div>
+      <aside class="notes">
+        Watch the compaction stage shrink mid-slide (CSS animation triggers on fragment 2).
+        The "dream you remember is not the dream you had" line is the punchline.
+        Land it slow.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 12: HIPPOCAMPUS IS MARKDOWN ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">Prosthetic memory · the tattoo wall</div>
+      <h2>The agent's hippocampus<br>is a <span style="color:var(--vhs-yellow);">markdown file</span>.</h2>
+
+      <div class="polaroid-wall" style="margin-top:1.5em;">
+        <div class="polaroid tilt-l pinned">
+          <div style="background:#1a1a1a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-cyan); font-family:'VT323',monospace; font-size:1.3em;">CLAUDE.md</div>
+          <div class="caption">the OG tattoo</div>
+        </div>
+        <div class="polaroid tilt-r pinned">
+          <div style="background:#1a1a1a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-cyan); font-family:'VT323',monospace; font-size:1.3em;">AGENTS.md</div>
+          <div class="caption">codex's version</div>
+        </div>
+        <div class="polaroid tilt-l pinned">
+          <div style="background:#2a1a1a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-magenta); font-family:'VT323',monospace; font-size:1.2em;">SKILLS</div>
+          <div class="caption">markdown procedures</div>
+        </div>
+        <div class="polaroid tilt-r pinned">
+          <div style="background:#1a2a1a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-yellow); font-family:'VT323',monospace; font-size:1.2em;">HOOKS</div>
+          <div class="caption">harness extensions</div>
+        </div>
+        <div class="polaroid tilt-r pinned" style="margin-top:0.5em;">
+          <div style="background:#2a1a2a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-magenta); font-family:'VT323',monospace; font-size:1.15em;">agent-context</div>
+          <div class="caption">play-side · curated</div>
+        </div>
+        <div class="polaroid tilt-l pinned" style="margin-top:0.5em;">
+          <div style="background:#1a2a2a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-cyan); font-family:'VT323',monospace; font-size:1.15em;">recall</div>
+          <div class="caption">play-side · search</div>
+        </div>
+        <div class="polaroid tilt-r pinned" style="margin-top:0.5em;">
+          <div style="background:#2a2a1a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-yellow); font-family:'VT323',monospace; font-size:1.15em;">chorus</div>
+          <div class="caption">multi-agent state</div>
+        </div>
+        <div class="polaroid tilt-l pinned" style="margin-top:0.5em;">
+          <div style="background:#1a1a2a; height:140px; display:flex; align-items:center; justify-content:center; color:var(--vhs-cyan); font-family:'VT323',monospace; font-size:1.2em;">gbrain</div>
+          <div class="caption">even Garry Tan tries</div>
+        </div>
+      </div>
+
+      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.2em; margin-top:1em;">
+        Groundhog Day alone is sad. Groundhog Day <em>multiplayer</em> is chaos. <br>
+        That's what <code>chorus</code> is for.
+      </p>
+
+      <aside class="notes">
+        Spend a sentence on each tile:
+        - CLAUDE.md / AGENTS.md: the originals
+        - Skills: Anthropic's markdown-as-procedure approach
+        - Hooks: lifecycle extensions
+        - agent-context, recall, chorus: your play-side stack
+        - gbrain: Garry Tan's hand-rolled agent brain — even YC president duct-tapes memory on
+        Multi-agent angle is the bridge to discussion later.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 13: BLENDER VS CATALOG ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">When you need to find the tattoo</div>
+      <h2>Your codebase is <em>not a smoothie</em>.</h2>
+
+      <div class="split" style="margin-top:1.5em;">
+        <div class="split-panel">
+          <img src="assets/images/blender.jpg" alt="blender">
+          <h3 style="color:var(--blood-red-bright);">VECTOR RAG</h3>
+          <p>Chunk it. Blend it. Embed it. Cosine-similarity it.</p>
+          <p>The original document is now <strong>a slurry</strong>.</p>
+          <p class="verdict">structure dies. context bleeds. retrieval hallucinates.</p>
+        </div>
+        <div class="split-panel">
+          <img src="assets/images/card-catalog.jpg" alt="library card catalog">
+          <h3 style="color:var(--vhs-yellow);">VECTORLESS</h3>
+          <p>Keep the structure. Let the model <em>navigate</em>.</p>
+          <p>PageIndex: tree-based reasoning over document hierarchy.</p>
+          <p class="verdict" style="color:var(--vhs-yellow);">the library card catalog approach.</p>
+        </div>
+      </div>
+
+      <p class="fragment fade-up" style="text-align:center; margin-top:1em; font-size:0.95em;">
+        <strong>Open question:</strong> where do the tattoos live? &nbsp; Who invalidates them? &nbsp; Per-user or shared? &nbsp; Can prompt injection write to them?
+      </p>
+
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.8em;">→ github.com/VectifyAI/PageIndex</p>
+
+      <aside class="notes">
+        Vector RAG isn't bad — it's a hammer. Vectorless is a different hammer for a different nail.
+        For codebases (which have structure), the blender loses important things.
+        DON'T resolve the storage question. Leave it open for discussion.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 14: STORAGE / INVALIDATION OPEN QUESTIONS ===== -->
+    <section data-background-color="#0a0708">
+      <div class="kicker">The harder questions</div>
+      <h2>Where do the tattoos live?</h2>
+
+      <ul style="font-size:0.9em; margin-top:1em; max-width:36em; margin-left:auto; margin-right:auto;">
+        <li class="fragment fade-up">In the repo? Then every clone is a brain transplant.</li>
+        <li class="fragment fade-up">In <code>~/.config</code>? Then nobody else can see what you taught it.</li>
+        <li class="fragment fade-up">On a server? Then who owns it, who audits it, who deletes it?</li>
+        <li class="fragment fade-up">Per-user? Per-team? Per-agent? All three?</li>
+        <li class="fragment fade-up"><strong>What happens when prompt injection writes to memory?</strong></li>
+        <li class="fragment fade-up">When the codebase changes, who invalidates the index? &nbsp;<em>(spoiler: nobody does)</em></li>
+      </ul>
+
+      <p class="fragment fade-up handwritten" style="text-align:center; color:var(--paper-tape); font-size:1.3em; margin-top:2em;">
+        Harness engineering is becoming a real discipline. <br>
+        Not just vibes anymore.
+      </p>
+
+      <p class="kicker fragment fade-up" style="text-align:center; margin-top:0.6em;">
+        → walkinglabs.github.io/learn-harness-engineering &nbsp;·&nbsp; arXiv:2605.18747
+      </p>
+
+      <aside class="notes">
+        These questions don't have clean answers. That's the point.
+        If the team starts arguing here, that's a win — discussion mode.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 15: CLOSER ===== -->
+    <section data-background-color="#0a0708" data-transition="fade">
+      <div class="closer" style="padding:0.6em 0;">
+        <div class="kicker">where we end up</div>
+        <div class="biography">
+          Your agent has no biography.&nbsp;<span class="yet">Yet.</span>
+        </div>
+        <p class="refrain fragment fade-up" style="font-size:1.4em !important; margin-top:0.8em;">
+          We keep mistaking <span class="accent">context</span> for <span class="accent">continuity</span>.
+        </p>
+
+        <div style="margin-top:1.4em; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; padding:0 1em;">
+          <div class="receipt fragment fade-up" style="position:static; transform:rotate(-2deg); font-size:0.65em;">
+            Should memory be <strong>opt-in</strong>, opt-out, or default-on?
+          </div>
+          <div class="receipt fragment fade-up" style="position:static; transform:rotate(2deg); font-size:0.65em;">
+            Is forgetting sometimes a <strong>feature</strong>?
+          </div>
+          <div class="receipt fragment fade-up" style="position:static; transform:rotate(-1deg); font-size:0.65em;">
+            Multi-agent: who <strong>owns</strong> the shared tattoos?
+          </div>
+        </div>
+
+        <p class="kicker fragment fade-up" style="margin-top:1.5em;">
+          discussion · 3 min &nbsp;·&nbsp; then the credits roll
+        </p>
+      </div>
+      <aside class="notes">
+        FINAL DROP of the refrain.
+        Then pitch the three discussion questions.
+        Let the room talk. Don't fill silence.
+        Hit "next" when discussion winds down — the cinema credits roll handles the goodbye.
+      </aside>
+    </section>
+
+    <!-- ===== SLIDE 16: CINEMA CREDITS ROLL ===== -->
+    <section data-background-color="#000" data-transition="fade" id="credits-section" data-state="trigger-credits-roll">
+      <div class="credits-frame">
+        <div class="credits-roll" id="credits-roll">
+
+          <div class="marquee">A FIELD GUIDE</div>
+          <div class="closing-tag" style="font-size:1em;">
+            to the weird fact that<br>
+            our agents have no biography
+          </div>
+
+          <div class="role">Written, directed &amp; presented by</div>
+          <div class="name">Amit Prusty</div>
+          <div class="small">github.com/cote-star</div>
+
+          <div class="role">Repository</div>
+          <div class="name">groundhog-day-for-agents</div>
+          <div class="small">github.com/cote-star/groundhog-day-for-agents</div>
+
+          <div class="role">Based on a talk by</div>
+          <div class="name">Mario</div>
+          <div class="small">"Building pi in a world of slop"</div>
+
+          <div class="role">Source material</div>
+          <div class="name">agentway.dev</div>
+          <div class="small">comparative harness notes — where the heartbeat lives</div>
+          <div class="name">Walking Labs</div>
+          <div class="small">learn-harness-engineering</div>
+          <div class="name">arXiv:2605.18747</div>
+          <div class="small">harness survey</div>
+          <div class="name">Liu et al. (2023)</div>
+          <div class="small">Lost in the Middle</div>
+          <div class="name">Anthropic Engineering Blog</div>
+          <div class="small">How Claude Code works in large codebases</div>
+
+          <div class="role">Starring</div>
+          <div class="name">Groundhog Day (1993)</div>
+          <div class="small">as the UX</div>
+          <div class="name">Memento (2000)</div>
+          <div class="small">as the mechanism</div>
+          <div class="name">Bill Murray's exasperation</div>
+          <div class="small">as everyone in this room</div>
+
+          <div class="role">The Ensemble</div>
+          <div class="name">Claude Code</div>
+          <div class="name">Codex</div>
+          <div class="name">Pi</div>
+          <div class="name">agent-context · recall · chorus</div>
+          <div class="small">play-side memory stack</div>
+          <div class="name">gbrain</div>
+          <div class="small">Garry Tan, hand-rolling continuity</div>
+          <div class="name">PageIndex</div>
+          <div class="small">VectifyAI — vectorless retrieval</div>
+
+          <div class="role">Cinematography</div>
+          <div class="name">Wikimedia Commons photographers</div>
+          <div class="small">phil 2018 · vitamix 5200 · indiana state library card catalog</div>
+          <div class="small">bulletin board · alarm clocks · vhs sunset · all CC</div>
+
+          <div class="role">Typography</div>
+          <div class="name">Bebas Neue · Playfair Display · Permanent Marker</div>
+          <div class="name">Special Elite · VT323</div>
+          <div class="small">via Google Fonts</div>
+
+          <div class="role">Score</div>
+          <div class="name">An alarm clock and a sad blip</div>
+          <div class="small">synthesized live in Web Audio. no audio files harmed.</div>
+
+          <div class="role">Built with</div>
+          <div class="name">reveal.js 5.1.0</div>
+          <div class="name">vanilla JavaScript</div>
+          <div class="name">an unreasonable amount of CSS</div>
+
+          <div class="role">Movie posters</div>
+          <div class="small">used under fair-use for educational commentary on the films.<br>
+            Groundhog Day (1993) © Columbia Pictures.<br>
+            Memento (2000) © Newmarket Films / Summit Entertainment.<br>
+            Thumbnails sourced from Wikipedia.</div>
+
+          <div class="role">Special thanks</div>
+          <div class="name">Every coding agent</div>
+          <div class="small">that has ever forgotten you exist</div>
+
+          <div class="closing-tag">
+            We keep mistaking <span class="accent">context</span> for <span class="accent">continuity</span>.
+          </div>
+
+          <div class="role" style="margin-top:3em;">Tomorrow</div>
+          <div class="marquee" style="font-size:1.8em;">06:00 AM</div>
+          <div class="small">the alarm rings again.</div>
+
+          <div style="height: 8em;"></div>
+        </div>
+
+        <div class="replay-hint">press R to replay · arrow to exit</div>
+      </div>
+      <aside class="notes">
+        Let it play. Total roll is ~55 seconds.
+        Press R to replay if the room wants to read again.
+        Press right arrow to exit.
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<script src="lib/reveal.js"></script>
+<script src="lib/notes.js"></script>
+<script src="lib/highlight.js"></script>
+<script src="js/effects.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    controls: true,
+    progress: true,
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    width: 1280,
+    height: 800,
+    margin: 0.06,
+    plugins: [ RevealNotes, RevealHighlight ]
+  }).then(() => {
+    if (window.GroundhogEffects) window.GroundhogEffects.init();
+  });
+</script>
+</body>
+</html>
