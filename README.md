@@ -24,13 +24,13 @@ A `python3 -m http.server` is wired in `.claude/launch.json` (the Claude harness
 
 ### Option B — Just open the file
 
-    open /Users/e059303/sandbox/play/groundhog-day-talk/index.html
+    open /Users/e059303/sandbox/play/groundhog-day-for-agents/index.html
 
 (Some browsers limit fonts/JS from `file://`. If the deck looks ugly, use Option A.)
 
 ### Option C — Start your own server
 
-    cd /Users/e059303/sandbox/play/groundhog-day-talk
+    cd /Users/e059303/sandbox/play/groundhog-day-for-agents
     python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
@@ -43,7 +43,7 @@ Then open `http://localhost:8000/`.
 |---|---|
 | `→` / `Space` | Next slide or fragment |
 | `←` | Previous |
-| `S` | Open speaker-notes window (all 15 slides have notes) |
+| `S` | Open speaker-notes window (all 16 slides have notes) |
 | `F` | Fullscreen |
 | `Esc` | Slide overview grid |
 | `B` | Pause to black |
@@ -81,7 +81,7 @@ e.g. if the room missed the alarm-clock flash, hit `Shift+R` to repeat it.
 
 ## What's in the folder
 
-    groundhog-day-talk/
+    groundhog-day-for-agents/
     ├── index.html              ← the deck
     ├── css/cinema.css          ← film grain, VHS, polaroid, Memento styling
     ├── js/effects.js           ← BOOOO counter, system-reminder pop-up,
