@@ -48,9 +48,11 @@ Then open `http://localhost:8000/`.
 | `Esc` | Slide overview grid |
 | `B` | Pause to black |
 | `Shift+B` | Manually bump the BOOOO counter (panic key) |
-| `Shift+R` | Manually fire the Groundhog Day reset gag |
-| `Shift+S` | Manually fire the fake `<system-reminder>` overlay |
-| `Shift+C` | Manually fire the compaction shrink animation |
+| `Shift+R` | Manually fire the Groundhog Day reset gag (alarm bell) |
+| `Shift+S` | Manually fire the fake `<system-reminder>` overlay (+ glitch blip) |
+| `Shift+C` | Manually fire the compaction shrink animation (+ tape warp) |
+| `Shift+T` | Manually play the tape-warp sound on its own |
+| `Shift+P` | Manually play the projector-chirp sound on its own |
 | `R` | Replay the cinema credits roll (only active on slide 16) |
 
 The `Shift+*` shortcuts exist so you can re-trigger gags if they didn't land —
