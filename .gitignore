@@ -5,3 +5,6 @@ node_modules/
 *.swp
 *.swo
 .claude/launch.json
+
+# local-only working files
+TALKING_POINTS.md
