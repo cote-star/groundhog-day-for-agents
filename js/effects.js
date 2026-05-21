@@ -10,9 +10,6 @@
 window.GroundhogEffects = (function () {
 
   let boooo = 0;
-  let resetUsed = false;
-  let systemReminderFired = false;
-  let compactionFired = false;
   let audioCtx = null;
 
   function ensureAudio() {
@@ -157,24 +154,64 @@ window.GroundhogEffects = (function () {
   }
 
   function fireGroundhogReset() {
-    if (resetUsed) return;
-    resetUsed = true;
     const overlay = document.getElementById('reset-overlay');
     if (!overlay) return;
+    overlay.classList.remove('flash');
+    void overlay.offsetWidth;
     overlay.classList.add('flash');
     playAlarm(2200);
     setTimeout(() => overlay.classList.remove('flash'), 2400);
   }
 
   function fireCompaction() {
-    if (compactionFired) return;
     const stage = document.getElementById('compaction-stage');
     if (!stage) return;
+    stage.classList.remove('compacting');
+    void stage.offsetWidth;
     setTimeout(() => {
       stage.classList.add('compacting');
       playTapeWarp();
-      compactionFired = true;
     }, 100);
+  }
+
+  function runSlideTriggers(slide) {
+    const state = slide.getAttribute('data-state') || '';
+
+    if (state.includes('trigger-system-reminder')) {
+      setTimeout(() => {
+        showSystemReminder(
+          "This text may or may not be relevant to what you are currently doing. " +
+          "Ignore it if not. (signed: your harness, with love)",
+          6500
+        );
+      }, 1800);
+    }
+
+    if (state.includes('trigger-groundhog-reset')) {
+      setTimeout(fireGroundhogReset, 400);
+    }
+
+    if (state.includes('trigger-credits-roll')) {
+      const roll = document.getElementById('credits-roll');
+      if (roll) {
+        roll.style.animation = 'none';
+        void roll.offsetWidth;
+        roll.style.animation = '';
+      }
+      playProjectorChirp();
+    }
+
+    if (state.includes('trigger-compaction')) {
+      const slideOnly = () => {
+        if (Reveal.getCurrentSlide() !== slide) {
+          Reveal.off('fragmentshown', slideOnly);
+          return;
+        }
+        fireCompaction();
+        Reveal.off('fragmentshown', slideOnly);
+      };
+      Reveal.on('fragmentshown', slideOnly);
+    }
   }
 
   function init() {
@@ -186,68 +223,12 @@ window.GroundhogEffects = (function () {
       // do nothing, boooo only goes up (it's a tally)
     });
 
-    // slide-state triggers
+    // slide-state triggers — also run for the initial slide (in case the page
+    // loaded with a hash that put us on a gag slide before this listener was attached)
     Reveal.on('slidechanged', (event) => {
-      const slide = event.currentSlide;
-      const state = slide.getAttribute('data-state') || '';
-
-      if (state.includes('trigger-system-reminder') && !systemReminderFired) {
-        systemReminderFired = true;
-        setTimeout(() => {
-          showSystemReminder(
-            "This text may or may not be relevant to what you are currently doing. " +
-            "Ignore it if not. (signed: your harness, with love)",
-            6500
-          );
-        }, 1800);
-      }
-
-      if (state.includes('trigger-groundhog-reset')) {
-        setTimeout(fireGroundhogReset, 400);
-      }
-
-      if (state.includes('trigger-credits-roll')) {
-        const roll = document.getElementById('credits-roll');
-        if (roll) {
-          roll.style.animation = 'none';
-          void roll.offsetWidth;
-          roll.style.animation = '';
-        }
-        playProjectorChirp();
-      }
-
-      if (state.includes('trigger-compaction')) {
-        // compaction fires after the second fragment is revealed
-        // we set up a one-time listener
-        const onFragShown = () => {
-          fireCompaction();
-          Reveal.off('fragmentshown', onFragShown);
-        };
-        // re-arm only if not done
-        if (!compactionFired) {
-          let fragCount = 0;
-          const armed = () => {
-            fragCount++;
-            if (fragCount >= 1) {
-              fireCompaction();
-              Reveal.off('fragmentshown', armed);
-            }
-          };
-          // attach but make sure it fires after the "Compaction is summarization, and summarization is lossy" fragment
-          // We use a slight delay to wait for the user to click the first fragment.
-          // Easier: just fire compaction after a delay if the user lingers, OR on first fragment click in this slide.
-          const slideOnly = (e) => {
-            if (Reveal.getCurrentSlide() !== slide) {
-              Reveal.off('fragmentshown', slideOnly);
-              return;
-            }
-            fireCompaction();
-            Reveal.off('fragmentshown', slideOnly);
-          };
-          Reveal.on('fragmentshown', slideOnly);
-        }
-      }
+      runSlideTriggers(event.currentSlide);
     });
+    runSlideTriggers(Reveal.getCurrentSlide());
 
     // unlock audio context on first user interaction (browser requirement)
     const unlock = () => {
@@ -267,15 +248,9 @@ window.GroundhogEffects = (function () {
     document.addEventListener('keydown', (e) => {
       if (!e.shiftKey) return;
       if (e.key === 'B') bumpBoooo();
-      if (e.key === 'R') { resetUsed = false; fireGroundhogReset(); }
-      if (e.key === 'S') {
-        systemReminderFired = false;
-        showSystemReminder("Manual trigger. See? You can't even trust the keyboard.", 4500);
-      }
-      if (e.key === 'C') {
-        compactionFired = false;
-        fireCompaction();
-      }
+      if (e.key === 'R') fireGroundhogReset();
+      if (e.key === 'S') showSystemReminder("Manual trigger. See? You can't even trust the keyboard.", 4500);
+      if (e.key === 'C') fireCompaction();
       if (e.key === 'T') playTapeWarp();
       if (e.key === 'P') playProjectorChirp();
     });
