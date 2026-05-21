@@ -73,6 +73,62 @@ window.GroundhogEffects = (function () {
     o.stop(now + 0.22);
   }
 
+  // synthesized tape-warp / cassette wow & flutter for /compact
+  function playTapeWarp() {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const dur = 1.4;
+
+    const osc = ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + dur);
+
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 6;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 35;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.001, now);
+    g.gain.linearRampToValueAtTime(0.1, now + 0.05);
+    g.gain.linearRampToValueAtTime(0, now + dur);
+
+    const noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate);
+    const nd = noiseBuf.getChannelData(0);
+    for (let i = 0; i < nd.length; i++) nd[i] = (Math.random() - 0.5) * 0.5;
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuf;
+    const ng = ctx.createGain();
+    ng.gain.value = 0.05;
+
+    osc.connect(g); noise.connect(ng);
+    g.connect(ctx.destination); ng.connect(ctx.destination);
+    osc.start(now); lfo.start(now); noise.start(now);
+    osc.stop(now + dur); lfo.stop(now + dur); noise.stop(now + dur);
+  }
+
+  // synthesized film-leader projector chirp (single 1kHz bell)
+  function playProjectorChirp() {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const o = ctx.createOscillator();
+    o.type = 'sine';
+    o.frequency.value = 1000;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.001, now);
+    g.gain.linearRampToValueAtTime(0.09, now + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(now);
+    o.stop(now + 0.2);
+  }
+
   function bumpBoooo() {
     boooo++;
     const el = document.getElementById('boooo-value');
@@ -114,9 +170,9 @@ window.GroundhogEffects = (function () {
     if (compactionFired) return;
     const stage = document.getElementById('compaction-stage');
     if (!stage) return;
-    // wait for the user to click past first fragments — handled by caller
     setTimeout(() => {
       stage.classList.add('compacting');
+      playTapeWarp();
       compactionFired = true;
     }, 100);
   }
@@ -153,11 +209,11 @@ window.GroundhogEffects = (function () {
       if (state.includes('trigger-credits-roll')) {
         const roll = document.getElementById('credits-roll');
         if (roll) {
-          // restart the CSS animation by reflow
           roll.style.animation = 'none';
           void roll.offsetWidth;
           roll.style.animation = '';
         }
+        playProjectorChirp();
       }
 
       if (state.includes('trigger-compaction')) {
@@ -220,6 +276,8 @@ window.GroundhogEffects = (function () {
         compactionFired = false;
         fireCompaction();
       }
+      if (e.key === 'T') playTapeWarp();
+      if (e.key === 'P') playProjectorChirp();
     });
 
     // R restarts credits roll (no Shift required since you're on the credits scene)
@@ -233,6 +291,7 @@ window.GroundhogEffects = (function () {
             void roll.offsetWidth;
             roll.style.animation = '';
           }
+          playProjectorChirp();
           e.preventDefault();
         }
       }
