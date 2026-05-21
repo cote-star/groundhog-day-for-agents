@@ -272,17 +272,17 @@ html, body, .reveal {
 .receipts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px 18px;
+  gap: 16px 14px;
   width: 100%;
-  padding: 6px 8px 0;
+  padding: 4px 6px 0;
 }
 .receipt {
   background: var(--polaroid-cream);
   color: var(--memento-ink);
-  padding: 12px 14px;
+  padding: 9px 12px;
   font-family: 'Permanent Marker', 'Caveat', cursive;
-  font-size: 0.7em;
-  line-height: 1.25;
+  font-size: 0.6em;
+  line-height: 1.2;
   box-shadow: 0 10px 22px var(--polaroid-shadow);
   position: relative;
 }
@@ -470,6 +470,24 @@ html, body, .reveal {
 .polaroid-wall .caption {
   font-size: 0.78em;
 }
+.polaroid-wall .tile {
+  background: #060606;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 3px rgba(0,0,0,0.8);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.polaroid-wall .caption {
+  font-size: 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+}
 
 /* ---------- Blender vs catalog split ---------- */
 .split {
@@ -490,10 +508,10 @@ html, body, .reveal {
 }
 .split-panel img {
   width: 100%;
-  max-height: 180px;
+  max-height: 150px;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   filter: contrast(1.05) saturate(0.85);
 }
 .split-panel h3 {
