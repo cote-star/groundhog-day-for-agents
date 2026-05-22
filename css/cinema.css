@@ -508,10 +508,10 @@ html, body, .reveal {
 }
 .split-panel img {
   width: 100%;
-  max-height: 150px;
+  max-height: 120px;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   filter: contrast(1.05) saturate(0.85);
 }
 .split-panel h3 {
@@ -675,33 +675,35 @@ html, body, .reveal {
 
 .attribution {
   position: fixed;
-  bottom: 10px;
-  left: 16px;
+  bottom: 6px;
+  left: 10px;
   font-family: 'VT323', monospace;
-  font-size: 20px;
-  letter-spacing: 0.06em;
-  color: #ffffff;
-  z-index: 10001;
-  background: rgba(0, 0, 0, 0.78);
-  border: 1px solid rgba(255, 46, 136, 0.55);
-  border-radius: 4px;
-  padding: 4px 12px;
-  box-shadow: 0 0 14px rgba(255, 46, 136, 0.35);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+  pointer-events: auto;
+  max-width: 60vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .attribution a {
-  color: var(--vhs-cyan);
+  color: rgba(42, 212, 212, 0.85);
   text-decoration: none;
-  font-weight: bold;
 }
 .attribution strong {
-  color: var(--vhs-yellow);
+  color: rgba(247, 208, 70, 0.95);
+  font-weight: normal;
 }
 .attribution::before {
   content: "© ";
-  color: var(--blood-red-bright);
-  font-weight: bold;
-  margin-right: 4px;
-  font-size: 1.1em;
+  color: rgba(212, 57, 59, 0.9);
+  margin-right: 2px;
 }
 
 .reveal section img {
