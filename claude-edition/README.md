@@ -1,5 +1,7 @@
 # Claude Edition
 
+*A harness-engineering field guide to memory, context, and continuity.*
+
 Restyled edition of [the deck at the repo root](../) for the
 **Claude Community Meetup, Amsterdam — June 18, 2026**.
 
