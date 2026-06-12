@@ -8,3 +8,5 @@ node_modules/
 
 # local-only working files
 TALKING_POINTS.md
+notes.local.js
+PRESENTER-README.md
