@@ -10,3 +10,6 @@ node_modules/
 TALKING_POINTS.md
 notes.local.js
 PRESENTER-README.md
+
+# local browser-automation screenshots
+.playwright-mcp/
