@@ -2,9 +2,8 @@
    Groundhog Day Effects · CLAUDE EDITION fork
    - boooo counter (Mario tribute)
    - fake <system-reminder> overlay (Mario's pain receipt)
-     + RANDOM re-fires on later slides (capped, cooldown,
-       never on gag slides) — the harness interrupts the talk
-       the way it interrupts the model
+     timed to slide entry and held until slide exit so the
+     presenter controls the narrative beat
    - compaction animation (REM with data loss)
    - Groundhog Day reset gag (alarm + slide 1 visual)
    - end-credits score: ~56s ambient D-minor drone in the mood
@@ -231,81 +230,66 @@ window.GroundhogEffects = (function () {
   //   annoyed, says NOTHING. The audience thinks the AV setup is flaky.
   // BEAT 3 (receipts slide — THE REVEAL): the data-state trigger
   //   fires; the presenter points at it, reads it aloud, and calls back
-  //   to slide 2: same box, sometimes useful, sometimes noise — and the
+  //   to slide 3: same box, sometimes useful, sometimes noise — and the
   //   model doesn't get to choose which.
-  // BEAT 4 (random post-reveal + a final HELPFUL one on the closer):
-  //   knowing meta texts at random, then on the closing slide the box
-  //   does its job one last time — it hands the audience the repo link.
+  // BEAT 4 (final HELPFUL one on the closer):
+  //   on the closing slide the box does its job one last time — it hands
+  //   the audience the repo link.
   //
-  // SCRIPTED_FIRES: indexh -> { text, delay (ms after slide enter), ms (visible) }
+  // SCRIPTED_FIRES: indexh -> { text, delay (ms after slide enter) }
   // (indices account for the bio/casting slide at position 2:
   //  refrain = idx 2, frame = idx 3, alignment = idx 5, closer = idx 16)
   const SCRIPTED_FIRES = {
     2: {
       text: "Helpful context: 'context' = what is in the window right now. 'continuity' = what survives across sessions. They are not the same thing.",
-      delay: 3000, ms: 10000
+      delay: 3000
     },
     3: {
       text: "This text may or may not be relevant to what you are currently doing. Ignore it if not.",
-      delay: 2500, ms: 9000
+      delay: 2500
     },
     5: {
       text: "Some earlier content was summarized to save space. Continue as if nothing happened.",
-      delay: 2500, ms: 9000
+      delay: 2500
     },
     16: {
       text: "Recalled for you: slides, sources, and the fair-use asterisk all live at github.com/cote-star/groundhog-day-for-agents — no need to photograph the screen.",
-      delay: 3000, ms: 14000
+      delay: 3000
     }
   };
-  const preFired = {};   // marked only when a popup actually SHOWED
-  const prePending = {}; // a timer is in flight for this idx
+  let reminderTimer = null;
 
-  const RANDOM_REMINDERS = [
-    "The user appears to be mid-presentation. This may or may not be relevant to what you are currently doing.",
-    "Context budget low. Earlier slides have been summarized as: 'something about a groundhog.'",
-    "The audience may or may not be paying attention. Ignore if not. (signed: your harness, with love)",
-    "This reminder was inserted in the most opportune place. This was the most opportune place.",
-    "A speaker note was truncated to fit. It was probably not important."
-  ];
-  let rrCount = 0;
-  let rrLastIdx = -99;
-  let rrArmed = false;
+  function clearReminderTimer() {
+    if (!reminderTimer) return;
+    clearTimeout(reminderTimer);
+    reminderTimer = null;
+  }
+
+  function hideSystemReminder() {
+    const overlay = document.getElementById('system-reminder-overlay');
+    if (overlay) overlay.classList.remove('show');
+  }
+
+  function scheduleSystemReminder(slide, text, delay) {
+    clearReminderTimer();
+    reminderTimer = setTimeout(() => {
+      reminderTimer = null;
+      if (Reveal.getCurrentSlide() === slide) {
+        showSystemReminder(text);
+      }
+    }, delay);
+  }
 
   function handleReminderGag(event) {
     const idx = event.indexh;
     const slide = event.currentSlide;
 
-    // scripted fires (beats 1, 2 and the closer) — each shows once per
-    // run-through, but is only CONSUMED when it actually displays. If the
-    // presenter advances before the delay elapses, re-entering the slide
-    // re-arms it (rehearsal-friendly).
-    if (SCRIPTED_FIRES[idx] && !preFired[idx]) {
-      if (prePending[idx]) return;
-      prePending[idx] = true;
+    // Scripted fires are deterministic on slide entry. They appear after a
+    // short presenter beat and stay visible until the slide changes.
+    if (SCRIPTED_FIRES[idx]) {
       const fire = SCRIPTED_FIRES[idx];
-      setTimeout(() => {
-        prePending[idx] = false;
-        if (Reveal.getCurrentSlide() === slide && !preFired[idx]) {
-          preFired[idx] = true;
-          showSystemReminder(fire.text, fire.ms);
-        }
-      }, fire.delay);
-      return;
+      scheduleSystemReminder(slide, fire.text, fire.delay);
     }
-
-    // BEAT 4 — random re-fires after the receipts-slide reveal (idx 7 = slide 8)
-    if (idx >= 8) rrArmed = true;
-    if (!rrArmed || rrCount >= 3) return;    // max 3 surprise fires per run-through
-    if ((slide.getAttribute('data-state') || '').includes('trigger-')) return; // keep gag slides clean
-    if (idx - rrLastIdx < 2) return;         // cooldown: never two slides in a row
-    if (Math.random() > 0.3) return;         // ~30% chance on eligible slides
-    rrCount++;
-    rrLastIdx = idx;
-    const text = RANDOM_REMINDERS[Math.floor(Math.random() * RANDOM_REMINDERS.length)];
-    setTimeout(() => {
-      if (Reveal.getCurrentSlide() === slide) showSystemReminder(text, 8000);
-    }, 1200 + Math.random() * 2500);
   }
 
   function bumpBoooo() {
@@ -323,16 +307,13 @@ window.GroundhogEffects = (function () {
     }
   }
 
-  function showSystemReminder(text, autoHideMs) {
+  function showSystemReminder(text) {
     const overlay = document.getElementById('system-reminder-overlay');
     const body = document.getElementById('system-reminder-text');
     if (!overlay || !body) return;
     body.textContent = text;
     overlay.classList.add('show');
     playBlip();
-    if (autoHideMs) {
-      setTimeout(() => overlay.classList.remove('show'), autoHideMs);
-    }
   }
 
   function fireGroundhogReset() {
@@ -360,15 +341,13 @@ window.GroundhogEffects = (function () {
     const state = slide.getAttribute('data-state') || '';
 
     if (state.includes('trigger-system-reminder')) {
-      // ACT 2 — the reveal. Stays up 12s so the presenter can point at it
-      // and read it aloud.
-      setTimeout(() => {
-        showSystemReminder(
-          "This text may or may not be relevant to what you are currently doing. " +
+      // ACT 2 — the reveal. It stays visible until the presenter leaves the slide.
+      scheduleSystemReminder(
+        slide,
+        "This text may or may not be relevant to what you are currently doing. " +
           "Ignore it if not. (signed: your harness, with love)",
-          12000
-        );
-      }, 1800);
+        2200
+      );
     }
 
     if (state.includes('trigger-groundhog-reset')) {
@@ -387,11 +366,14 @@ window.GroundhogEffects = (function () {
     }
 
     if (state.includes('trigger-compaction')) {
+      let compactionFragmentsSeen = 0;
       const slideOnly = () => {
         if (Reveal.getCurrentSlide() !== slide) {
           Reveal.off('fragmentshown', slideOnly);
           return;
         }
+        compactionFragmentsSeen++;
+        if (compactionFragmentsSeen < 2) return;
         fireCompaction();
         Reveal.off('fragmentshown', slideOnly);
       };
@@ -411,6 +393,8 @@ window.GroundhogEffects = (function () {
     // slide-state triggers — also run for the initial slide (in case the page
     // loaded with a hash that put us on a gag slide before this listener was attached)
     Reveal.on('slidechanged', (event) => {
+      clearReminderTimer();
+      hideSystemReminder();
       runSlideTriggers(event.currentSlide);
       handleReminderGag(event);
       // leaving the credits scene kills the score
@@ -440,7 +424,7 @@ window.GroundhogEffects = (function () {
       if (!e.shiftKey) return;
       if (e.key === 'B') bumpBoooo();
       if (e.key === 'R') fireGroundhogReset();
-      if (e.key === 'S') showSystemReminder("Manual trigger. See? You can't even trust the keyboard.", 4500);
+      if (e.key === 'S') showSystemReminder("Manual trigger. See? You can't even trust the keyboard.");
       if (e.key === 'C') fireCompaction();
       if (e.key === 'T') playTapeWarp();
       if (e.key === 'P') playProjectorChirp();
