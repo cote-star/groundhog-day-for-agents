@@ -242,19 +242,19 @@ window.GroundhogEffects = (function () {
   const SCRIPTED_FIRES = {
     2: {
       text: "Helpful context: 'context' = what is in the window right now. 'continuity' = what survives across sessions. They are not the same thing.",
-      delay: 3000
+      delay: 1000
     },
     3: {
       text: "This text may or may not be relevant to what you are currently doing. Ignore it if not.",
-      delay: 2500
+      delay: 1000
     },
     5: {
       text: "Some earlier content was summarized to save space. Continue as if nothing happened.",
-      delay: 2500
+      delay: 1000
     },
     16: {
       text: "Recalled for you: slides, sources, and the fair-use asterisk all live at github.com/cote-star/groundhog-day-for-agents — no need to photograph the screen.",
-      delay: 3000
+      delay: 1000
     }
   };
   let reminderTimer = null;
@@ -346,7 +346,7 @@ window.GroundhogEffects = (function () {
         slide,
         "This text may or may not be relevant to what you are currently doing. " +
           "Ignore it if not. (signed: your harness, with love)",
-        2200
+        1000
       );
     }
 
