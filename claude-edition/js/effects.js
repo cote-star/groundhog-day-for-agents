@@ -35,7 +35,7 @@ window.GroundhogEffects = (function () {
     const gain = ctx.createGain();
     gain.gain.value = 0;
     gain.connect(ctx.destination);
-    gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
+    gain.gain.linearRampToValueAtTime(0.06, now + 0.18); // softer peak + gentler fade-in (was 0.15 @ 0.05) — less startling in a room
     gain.gain.linearRampToValueAtTime(0, now + duration);
     // two oscillators alternating to fake bell-clapper
     const o1 = ctx.createOscillator();
@@ -47,7 +47,7 @@ window.GroundhogEffects = (function () {
     const lfo = ctx.createOscillator();
     lfo.frequency.value = 8;
     const lfoGain = ctx.createGain();
-    lfoGain.gain.value = 0.5;
+    lfoGain.gain.value = 0.12; // gentler tremolo (was 0.5) — calmer pulse, not a blare
     lfo.connect(lfoGain);
     lfoGain.connect(gain.gain);
     o1.connect(gain);
