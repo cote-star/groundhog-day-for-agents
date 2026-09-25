@@ -1,0 +1,7 @@
+# Paths the anonymisation scanner must not scan.
+# ONLY third-party code we do not author. Never use this to silence a hit in our own files.
+#
+# lib/ is vendored reveal.js + highlight.js (minified upstream bundles). Their
+# language keyword tables and minified identifiers collide with short denylist
+# terms; the matches are substring/keyword coincidences, not our content.
+lib/
